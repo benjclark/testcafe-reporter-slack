@@ -1,5 +1,4 @@
-# DEPRECATED
-I don't maintain this repo (anymore). Just fork and alter it
+Forked for use with Springer Nature apps
 
 # TestCafe Reporter Slack 
 ### testcafe-reporter-slack
