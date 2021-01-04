@@ -7,13 +7,12 @@ gulp.task('clean', function (cb) {
   return del('lib', cb);
 });
 
-gulp.task('build', gulp.series('clean', function (done) {
-    gulp.src('src/**/*.js')
+gulp.task('build', gulp.series('clean', function () {
+    return gulp.src('src/**/*.js')
         .pipe(babel({
             presets: ['@babel/preset-env']
         }))
         .pipe(gulp.dest('lib'))
-    done()
 }));
 
 gulp.task('test', gulp.series('build', function () {
