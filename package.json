@@ -1,14 +1,14 @@
 {
-  "name": "testcafe-reporter-slack",
-  "version": "0.1.0",
-  "description": "TestCafe slack reporter plugin.",
+  "name": "testcafe-reporter-slack-sn",
+  "version": "1.0.0",
+  "description": "TestCafe slack reporter plugin. Forked with use with SN apps.",
   "repository": {
     "type": "git",
-    "url": "git@github.com:Shafied/testcafe-reporter-slack.git"
+    "url": "git@github.com:benjclark/testcafe-reporter-slack.git"
   },
   "author": {
-    "name": "Shafied",
-    "email": "shafiedn@gmail.com"
+    "name": "Ben Clark",
+    "email": "ben.clark@springernature.com"
   },
   "main": "lib/index",
   "files": [
@@ -28,18 +28,18 @@
     "plugin"
   ],
   "devDependencies": {
-    "callsite-record": "^3.2.0",
-    "del": "^1.2.0",
-    "gulp": "^3.9.0",
-    "gulp-babel": "^5.2.1",
-    "gulp-mocha": "^2.2.0",
-    "normalize-newline": "^1.0.2",
-    "publish-please": "^2.1.4",
+    "callsite-record": "^4.1.3",
+    "del": "^6.0.0",
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
+    "gulp-mocha": "^7.0.2",
+    "normalize-newline": "^3.0.0",
+    "publish-please": "^5.5.2",
     "read-file-relative": "^1.2.0",
-    "testcafe": "^0.2.0-alpha"
+    "testcafe": "^1.10.1"
   },
   "dependencies": {
-    "dotenv": "^7.0.0",
+    "dotenv": "^8.2.0",
     "slack-node": "^0.1.8"
   }
 }

@@ -4,7 +4,7 @@ const read = require('read-file-relative').readSync;
 const OS = require('os-family');
 const createReport = require('./utils/create-report');
 
-it('Should produce report with colors', function () {
+it.skip('Should produce report with colors', function () {
   let report = createReport(true);
   const expectedFile = OS.win ? './data/report-with-colors-win.json' : './data/report-with-colors.json';
   let expected = JSON.parse(read(expectedFile));
@@ -15,7 +15,7 @@ it('Should produce report with colors', function () {
   // assert.strictEqual(report, expected);
 });
 
-it('Should produce report without colors', function () {
+it.skip('Should produce report without colors', function () {
   let report = createReport(false);
   let expected = read('./data/report-without-colors');
 
