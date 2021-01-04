@@ -1,6 +1,6 @@
 const LoggingLevels = {
-  TEST: 'TEST',
-  SUMMARY: 'SUMMARY'
+    TEST:    'TEST',
+    SUMMARY: 'SUMMARY'
 };
 
 export default LoggingLevels;

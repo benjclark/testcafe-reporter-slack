@@ -29,10 +29,7 @@ var defaultConfig = {
 var testCafeConfigFilePath = (0, _fileHelpers.resolvePath)('.testcaferc.json');
 
 var loadReporterConfig = function loadReporterConfig() {
-  if (!(0, _fileHelpers.isFileExists)(testCafeConfigFilePath)) {
-    return defaultConfig;
-  }
-
+  if (!(0, _fileHelpers.isFileExists)(testCafeConfigFilePath)) return defaultConfig;
   var configRawData = null;
 
   try {

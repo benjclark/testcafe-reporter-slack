@@ -21,7 +21,8 @@ var SlackMessage = /*#__PURE__*/function () {
   function SlackMessage() {
     _classCallCheck(this, SlackMessage);
 
-    var slackNode = require('slack-node');
+    var slackNode = require('slack-node'); // eslint-disable-next-line new-cap
+
 
     this.slack = new slackNode();
     this.slack.setWebhook(_config["default"].webhookUrl);
@@ -53,9 +54,7 @@ var SlackMessage = /*#__PURE__*/function () {
           if (err) {
             console.log('Unable to send a message to slack');
             console.log(response);
-          } else {
-            console.log("The following message is send to slack: \n ".concat(message));
-          }
+          } else console.log("The following message is send to slack: \n ".concat(message));
         }
       });
     }
@@ -63,7 +62,7 @@ var SlackMessage = /*#__PURE__*/function () {
     key: "sendTestReport",
     value: function sendTestReport(nrFailedTests) {
       this.sendMessage(this.getTestReportMessage(), nrFailedTests > 0 && this.loggingLevel === _LoggingLevels["default"].TEST ? {
-        "attachments": [{
+        'attachments': [{
           color: 'danger',
           text: "".concat(nrFailedTests, " test failed")
         }]
@@ -74,22 +73,18 @@ var SlackMessage = /*#__PURE__*/function () {
     value: function getTestReportMessage() {
       var message = this.getSlackMessage();
       var errorMessage = this.getErrorMessage();
-
-      if (errorMessage.length > 0 && this.loggingLevel === _LoggingLevels["default"].TEST) {
-        message = message + "\n\n\n```" + this.getErrorMessage() + '```';
-      }
-
+      if (errorMessage.length > 0 && this.loggingLevel === _LoggingLevels["default"].TEST) message = message + '\n\n\n```' + this.getErrorMessage() + '```';
       return message;
     }
   }, {
     key: "getErrorMessage",
     value: function getErrorMessage() {
-      return this.errorMessages.join("\n\n\n");
+      return this.errorMessages.join('\n\n\n');
     }
   }, {
     key: "getSlackMessage",
     value: function getSlackMessage() {
-      return this.messages.join("\n");
+      return this.messages.join('\n');
     }
   }]);
 
