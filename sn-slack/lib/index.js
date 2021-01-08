@@ -26,19 +26,16 @@ exports['default'] = function () {
       var _this = this;
 
       return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-        var startTimeFormatted;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _this.slack = new _SlackMessage["default"]();
                 _this.startTime = startTime;
                 _this.testCount = testCount;
-                startTimeFormatted = _this.moment(_this.startTime).format('M/D/YYYY h:mm:ss a');
 
-                _this.slack.sendMessage("".concat(_emojis["default"].rocket, " ", 'Starting TestCafe:', " ").concat((0, _textFormatters.bold)(startTimeFormatted), "\n").concat(_emojis["default"].computer, " Running ").concat((0, _textFormatters.bold)(testCount), " tests in: ").concat((0, _textFormatters.bold)(userAgents), "\n"));
+                _this.write("Running tests in: ".concat(userAgents)).newline().newline();
 
-              case 5:
+              case 3:
               case "end":
                 return _context.stop();
             }
@@ -55,9 +52,8 @@ exports['default'] = function () {
             switch (_context2.prev = _context2.next) {
               case 0:
                 _this2.currentFixtureName = name;
-                if (loggingLevel === _LoggingLevels["default"].TEST) _this2.slack.addMessage((0, _textFormatters.bold)(_this2.currentFixtureName));
 
-              case 2:
+              case 1:
               case "end":
                 return _context2.stop();
             }
@@ -69,44 +65,53 @@ exports['default'] = function () {
       var _this3 = this;
 
       return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
-        var hasErr, message;
+        var errors, warnings, hasErrors, hasWarnings, result, title, hasErr, message;
         return regeneratorRuntime.wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                hasErr = !!testRunInfo.errs.length;
-                message = null;
+                _this3.slack = new _SlackMessage["default"]();
+                errors = testRunInfo.errs;
+                warnings = testRunInfo.warnings;
+                hasErrors = !!errors.length;
+                hasWarnings = !!warnings.length;
+                result = hasErrors ? 'FAIL' : 'PASS';
+                name = "".concat(_this3.currentFixtureName, " - ").concat(name);
+                title = "\n".concat(result, ": ").concat(name);
 
-                if (!testRunInfo.skipped) {
-                  _context3.next = 6;
-                  break;
+                _this3.write(title);
+
+                if (hasErrors) {
+                  _this3.newline().write('\nErrors:');
+
+                  errors.forEach(function (error) {
+                    _this3.newline().write("".concat(_this3.formatError(error), "\n"));
+                  });
                 }
 
-                message = "".concat(_emojis["default"].fastForward, " ").concat((0, _textFormatters.italics)(name), " - ").concat((0, _textFormatters.bold)('skipped'));
-                _context3.next = 13;
-                break;
+                if (hasWarnings) {
+                  _this3.newline().write('\nWarnings:');
 
-              case 6:
+                  warnings.forEach(function (warning) {
+                    _this3.newline().write("".concat(warning, "\n"));
+                  });
+                }
+
+                hasErr = !!testRunInfo.errs.length;
+
                 if (!hasErr) {
-                  _context3.next = 12;
+                  _context3.next = 16;
                   break;
                 }
 
                 message = "".concat(_emojis["default"].fire, " ").concat((0, _textFormatters.italics)(name), " - ").concat((0, _textFormatters.bold)('failed'));
-                _context3.next = 10;
+                _context3.next = 16;
                 return _this3.renderErrors(testRunInfo.errs);
 
-              case 10:
-                _context3.next = 13;
-                break;
-
-              case 12:
-                message = "".concat(_emojis["default"].checkMark, " ").concat((0, _textFormatters.italics)(name));
-
-              case 13:
+              case 16:
                 if (loggingLevel === _LoggingLevels["default"].TEST) _this3.slack.addMessage(message);
 
-              case 14:
+              case 17:
               case "end":
                 return _context3.stop();
             }
@@ -138,26 +143,28 @@ exports['default'] = function () {
       var _this5 = this;
 
       return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5() {
-        var endTimeFormatted, durationMs, durationFormatted, finishedStr, durationStr, summaryStr, message;
+        var durationMs, durationStr, footer, message;
         return regeneratorRuntime.wrap(function _callee5$(_context5) {
           while (1) {
             switch (_context5.prev = _context5.next) {
               case 0:
-                endTimeFormatted = _this5.moment(endTime).format('M/D/YYYY h:mm:ss a');
+                _this5.slack = new _SlackMessage["default"]();
                 durationMs = endTime - _this5.startTime;
-                durationFormatted = _this5.moment.duration(durationMs).format('h[h] mm[m] ss[s]');
-                finishedStr = "".concat(_emojis["default"].finishFlag, " Testing finished at ").concat((0, _textFormatters.bold)(endTimeFormatted), "\n");
-                durationStr = "".concat(_emojis["default"].stopWatch, " Duration: ").concat((0, _textFormatters.bold)(durationFormatted), "\n");
-                summaryStr = '';
-                if (result.skippedCount) summaryStr += "".concat(_emojis["default"].fastForward, " ").concat((0, _textFormatters.bold)("".concat(result.skippedCount, " skipped")), "\n");
-                if (result.failedCount) summaryStr += "".concat(_emojis["default"].noEntry, " ").concat((0, _textFormatters.bold)("".concat(result.failedCount, "/").concat(_this5.testCount, " failed")));else summaryStr += "".concat(_emojis["default"].checkMark, " ").concat((0, _textFormatters.bold)("".concat(result.passedCount, "/").concat(_this5.testCount, " passed")));
-                message = "\n\n".concat(finishedStr, " ").concat(durationStr, " ").concat(summaryStr);
+                durationStr = _this5.moment.duration(durationMs).format('h[h] mm[m] ss[s]');
+                footer = result.failedCount ? "\n\n".concat(result.failedCount, "/").concat(_this5.testCount, " failed") : "\n\n".concat(result.passedCount, " passed");
+                footer += " (Duration: ".concat(durationStr, ")");
+                footer += " (Skipped: ".concat(result.skippedCount, ")");
+                footer += " (Warnings: ".concat(warnings.length, ")");
 
-                _this5.slack.addMessage(message);
+                _this5.write(footer).newline();
 
-                _this5.slack.sendTestReport(_this5.testCount - passed);
+                if (result.failedCount) {
+                  message = "".concat(_emojis["default"].noEntry, " ").concat((0, _textFormatters.bold)("".concat(result.failedCount, "/").concat(_this5.testCount, " failed")));
 
-              case 11:
+                  _this5.slack.addMessage(message);
+                }
+
+              case 9:
               case "end":
                 return _context5.stop();
             }
