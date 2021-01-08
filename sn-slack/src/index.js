@@ -8,6 +8,8 @@ import { bold, italics } from './utils/textFormatters';
 const { loggingLevel } = config;
 
 exports['default'] = () => {
+    const slack = new SlackMessage();
+
     return {
         async reportTaskStart (startTime, userAgents, testCount) {
             this.startTime = startTime;
@@ -23,8 +25,6 @@ exports['default'] = () => {
         },
 
         async reportTestDone (name, testRunInfo) {
-            this.slack = new SlackMessage();
-
             const errors      = testRunInfo.errs;
             const warnings    = testRunInfo.warnings;
             const hasErrors   = !!errors.length;
@@ -64,17 +64,16 @@ exports['default'] = () => {
                 message = `${emojis.fire} ${italics(name)} - ${bold('failed')}`;
                 await this.renderErrors(testRunInfo.errs);
             }
-            if (loggingLevel === LoggingLevels.TEST) this.slack.addMessage(message);
+            if (loggingLevel === LoggingLevels.TEST) slack.addMessage(message);
         },
 
         async renderErrors (errors) {
             errors.forEach((error, id) => {
-                this.slack.addErrorMessage(this.formatError(error, `${id + 1} `));
+                slack.addErrorMessage(this.formatError(error, `${id + 1} `));
             });
         },
 
         async reportTaskDone (endTime, passed, warnings, result) {
-            this.slack = new SlackMessage();
             const durationMs  = endTime - this.startTime;
             const durationStr = this.moment
                 .duration(durationMs)
@@ -94,7 +93,8 @@ exports['default'] = () => {
             if (result.failedCount) {
                 const message = `${emojis.noEntry} ${bold(`${result.failedCount}/${this.testCount} failed`)}`;
 
-                this.slack.addMessage(message);
+                slack.addMessage(message);
+                slack.sendTestReport(this.testCount - passed);
             }
         }
     };

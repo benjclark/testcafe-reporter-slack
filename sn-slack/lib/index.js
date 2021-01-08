@@ -21,6 +21,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 var loggingLevel = _config["default"].loggingLevel;
 
 exports['default'] = function () {
+  var slack = new _SlackMessage["default"]();
   return {
     reportTaskStart: function reportTaskStart(startTime, userAgents, testCount) {
       var _this = this;
@@ -70,7 +71,6 @@ exports['default'] = function () {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                _this3.slack = new _SlackMessage["default"]();
                 errors = testRunInfo.errs;
                 warnings = testRunInfo.warnings;
                 hasErrors = !!errors.length;
@@ -100,18 +100,18 @@ exports['default'] = function () {
                 hasErr = !!testRunInfo.errs.length;
 
                 if (!hasErr) {
-                  _context3.next = 16;
+                  _context3.next = 15;
                   break;
                 }
 
                 message = "".concat(_emojis["default"].fire, " ").concat((0, _textFormatters.italics)(name), " - ").concat((0, _textFormatters.bold)('failed'));
-                _context3.next = 16;
+                _context3.next = 15;
                 return _this3.renderErrors(testRunInfo.errs);
 
-              case 16:
-                if (loggingLevel === _LoggingLevels["default"].TEST) _this3.slack.addMessage(message);
+              case 15:
+                if (loggingLevel === _LoggingLevels["default"].TEST) slack.addMessage(message);
 
-              case 17:
+              case 16:
               case "end":
                 return _context3.stop();
             }
@@ -128,7 +128,7 @@ exports['default'] = function () {
             switch (_context4.prev = _context4.next) {
               case 0:
                 errors.forEach(function (error, id) {
-                  _this4.slack.addErrorMessage(_this4.formatError(error, "".concat(id + 1, " ")));
+                  slack.addErrorMessage(_this4.formatError(error, "".concat(id + 1, " ")));
                 });
 
               case 1:
@@ -148,7 +148,6 @@ exports['default'] = function () {
           while (1) {
             switch (_context5.prev = _context5.next) {
               case 0:
-                _this5.slack = new _SlackMessage["default"]();
                 durationMs = endTime - _this5.startTime;
                 durationStr = _this5.moment.duration(durationMs).format('h[h] mm[m] ss[s]');
                 footer = result.failedCount ? "\n\n".concat(result.failedCount, "/").concat(_this5.testCount, " failed") : "\n\n".concat(result.passedCount, " passed");
@@ -160,11 +159,11 @@ exports['default'] = function () {
 
                 if (result.failedCount) {
                   message = "".concat(_emojis["default"].noEntry, " ").concat((0, _textFormatters.bold)("".concat(result.failedCount, "/").concat(_this5.testCount, " failed")));
-
-                  _this5.slack.addMessage(message);
+                  slack.addMessage(message);
+                  slack.sendTestReport(_this5.testCount - passed);
                 }
 
-              case 9:
+              case 8:
               case "end":
                 return _context5.stop();
             }
