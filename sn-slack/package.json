@@ -1,6 +1,6 @@
 {
   "name": "testcafe-reporter-sn-slack",
-  "version": "3.2.0",
+  "version": "3.4.0",
   "description": "TestCafe slack reporter plugin. Forked with use with SN apps.",
   "repository": {
     "type": "git",
