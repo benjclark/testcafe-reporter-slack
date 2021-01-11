@@ -100,18 +100,24 @@ exports['default'] = function () {
                 hasErr = !!testRunInfo.errs.length;
 
                 if (!hasErr) {
-                  _context3.next = 15;
+                  _context3.next = 16;
                   break;
                 }
 
                 message = "".concat(_emojis["default"].fire, " ").concat((0, _textFormatters.italics)(name), " - ").concat((0, _textFormatters.bold)('failed'));
-                _context3.next = 15;
+
+                if (!(loggingLevel === _LoggingLevels["default"].TEST)) {
+                  _context3.next = 16;
+                  break;
+                }
+
+                _context3.next = 16;
                 return _this3.renderErrors(testRunInfo.errs);
 
-              case 15:
-                if (loggingLevel === _LoggingLevels["default"].TEST) slack.addMessage(message);
-
               case 16:
+                slack.addMessage(message);
+
+              case 17:
               case "end":
                 return _context3.stop();
             }
