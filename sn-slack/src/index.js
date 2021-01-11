@@ -64,7 +64,7 @@ exports['default'] = () => {
                 message = `${emojis.fire} ${italics(name)} - ${bold('failed')}`;
                 if (loggingLevel === LoggingLevels.TEST)
                     await this.renderErrors(testRunInfo.errs);
-                
+
             }
             slack.addMessage(message);
         },
