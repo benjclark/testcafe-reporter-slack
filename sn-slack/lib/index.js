@@ -104,7 +104,7 @@ exports['default'] = function () {
                   break;
                 }
 
-                message = "".concat(_emojis["default"].fire, " ").concat((0, _textFormatters.italics)(name), " - ").concat((0, _textFormatters.bold)('failed'));
+                message = "".concat(_emojis["default"].fire, " ").concat((0, _textFormatters.italics)(name), " - ").concat((0, _textFormatters.bold)('failed'), "\nhttps://concourse.halfpipe.io/teams/oscar/pipelines/oscar-tests");
 
                 if (!(loggingLevel === _LoggingLevels["default"].TEST)) {
                   _context3.next = 16;

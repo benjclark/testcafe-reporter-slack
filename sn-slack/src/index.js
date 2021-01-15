@@ -61,7 +61,7 @@ exports['default'] = () => {
             let message;
 
             if (hasErr) {
-                message = `${emojis.fire} ${italics(name)} - ${bold('failed')}`;
+                message = `${emojis.fire} ${italics(name)} - ${bold('failed')}\nhttps://concourse.halfpipe.io/teams/oscar/pipelines/oscar-tests`;
                 if (loggingLevel === LoggingLevels.TEST)
                     await this.renderErrors(testRunInfo.errs);
 
